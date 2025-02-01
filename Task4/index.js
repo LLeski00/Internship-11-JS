@@ -4,26 +4,30 @@ let calories;
 let plants = new Map();
 
 do {
-    plantName = prompt("Enter the name of the plant (Press cancel to exit): ");
+    plantName = tryReadText(
+        "Enter the name of the plant (Press cancel to exit): "
+    );
 
-    if (isEmpty(plantName)) {
-        alert("Exiting...");
+    if (!plantName) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    color = prompt("Enter the color of the plant (Press cancel to exit): ");
+    color = tryReadText(
+        "Enter the color of the plant (Press cancel to exit): "
+    );
 
-    if (isEmpty(color)) {
-        alert("Exiting...");
+    if (!color) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    calories = prompt(
+    calories = tryReadCalories(
         "Enter the number of calories of the plant (Press cancel to exit): "
     );
 
-    if (!isNumberValid(calories)) {
-        alert("Exiting...");
+    if (!calories) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -56,14 +60,36 @@ if (plants.length == 0) {
     console.log(topColorsByCalories);
 }
 
-function isEmpty(str) {
-    if (str === null || str == "") return true;
-    return false;
+function tryReadText(msg) {
+    let str = prompt(msg);
+
+    if (str === null) {
+        alert("Exiting...");
+        return false;
+    } else if (str === "") {
+        alert("This can't be empty!");
+        return false;
+    }
+
+    return str;
 }
 
-function isNumberValid(num) {
-    if (isEmpty(num) || isNaN(num) || parseFloat(num) <= 0) return false;
-    return true;
+function tryReadCalories(msg) {
+    let calories = prompt(msg);
+
+    if (calories === null) {
+        alert("Exiting...");
+        return false;
+    } else if (
+        calories === "" ||
+        isNaN(calories) ||
+        parseFloat(calories) <= 0
+    ) {
+        alert("Invalid calories!");
+        return false;
+    }
+
+    return calories;
 }
 
 function getTotalCaloriesByColor(plants) {

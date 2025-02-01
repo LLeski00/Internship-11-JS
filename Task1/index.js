@@ -4,36 +4,26 @@ let genre;
 let books = [];
 
 do {
-    title = prompt("Enter the name of the book (Press cancel to exit): ");
+    title = tryReadText("Enter the name of the book (Press cancel to exit): ");
 
-    if (title === null) {
-        alert("Exiting...");
-        break;
-    } else if (title === "") {
-        alert("The title can't be empty");
-        if (confirm("Continue adding?")) continue;
+    if (!title) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    price = prompt("Enter the price of the book (Press cancel to exit): ");
+    price = tryReadPrice(
+        "Enter the price of the book (Press cancel to exit): "
+    );
 
-    if (price === null) {
-        alert("Exiting...");
-        break;
-    } else if (!isNumberValid(price)) {
-        alert("The number is not valid");
-        if (confirm("Continue adding?")) continue;
+    if (!price) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    genre = prompt("Enter the genre of the book (Press cancel to exit): ");
+    genre = tryReadText("Enter the genre of the book (Press cancel to exit): ");
 
-    if (genre === null) {
-        alert("Exiting...");
-        break;
-    } else if (genre === "") {
-        alert("The genre can't be empty");
-        if (confirm("Continue adding?")) continue;
+    if (!genre) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -60,9 +50,32 @@ if (books.length == 0) {
     console.log(books);
 }
 
-function isNumberValid(num) {
-    if (num === "" || isNaN(num) || parseFloat(num) <= 0) return false;
-    return true;
+function tryReadText(msg) {
+    let str = prompt(msg);
+
+    if (str === null) {
+        alert("Exiting...");
+        return false;
+    } else if (str === "") {
+        alert("This can't be empty!");
+        return false;
+    }
+
+    return str;
+}
+
+function tryReadPrice(msg) {
+    let price = prompt(msg);
+
+    if (price === null) {
+        alert("Exiting...");
+        return false;
+    } else if (price === "" || isNaN(price) || parseFloat(price) <= 0) {
+        alert("Invalid price!");
+        return false;
+    }
+
+    return price;
 }
 
 function getAverageBookPrice(books) {

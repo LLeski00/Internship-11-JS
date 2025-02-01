@@ -1,17 +1,14 @@
 let num;
 
 do {
-    num = Number(prompt("Enter the number (Press cancel to exit): "));
+    num = Number(tryReadNumber("Enter the number (Press cancel to exit): "));
 
-    if (!isNumberValid(num)) {
-        alert("Exiting...");
+    if (!num) {
+        if (confirm("Do you want to continue?")) continue;
+        break;
+    }
 
-        if (confirm("Do you want to try again?")) continue;
-        else {
-            num = null;
-            break;
-        }
-    } else break;
+    break;
 } while (true);
 
 if (num != null) {
@@ -26,9 +23,18 @@ if (num != null) {
     console.log("Median: " + getMedian(squares));
 }
 
-function isNumberValid(num) {
-    if (!Number.isInteger(num) || num <= 0) return false;
-    return true;
+function tryReadNumber(msg) {
+    let number = Number(prompt(msg));
+
+    if (number === null) {
+        alert("Exiting...");
+        return false;
+    } else if (number === "" || isNaN(number) || parseInt(number) <= 0) {
+        alert("Invalid number!");
+        return false;
+    }
+
+    return number;
 }
 
 function getMedian(squares) {

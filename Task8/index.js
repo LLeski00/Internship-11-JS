@@ -17,9 +17,8 @@ function handleSubmit(event) {
     const availability = document.querySelector(
         'input[name="equipmentStatus"]:checked'
     ).value;
-    console.log(availability);
-    if (!name || !price || !availability) {
-        alert("input is required");
+    if (!name || !price || price < 0 || !availability) {
+        alert("Invalid input!");
         return;
     }
 

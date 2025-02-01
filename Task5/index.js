@@ -4,30 +4,30 @@ let points;
 let students = [];
 
 do {
-    firstName = prompt(
+    firstName = tryReadText(
         "Enter the first name of the student (Press cancel to exit): "
     );
 
-    if (isEmpty(firstName)) {
-        alert("Exiting...");
+    if (!firstName) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    lastName = prompt(
+    lastName = tryReadText(
         "Enter the last name of the student (Press cancel to exit): "
     );
 
-    if (isEmpty(lastName)) {
-        alert("Exiting...");
+    if (!lastName) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    points = prompt(
+    points = tryReadPoints(
         "Enter the number of points of the student (0-100) (Press cancel to exit): "
     );
 
-    if (!arePointsValid(points)) {
-        alert("Exiting...");
+    if (!points) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -52,20 +52,37 @@ if (students.length == 0) {
     console.log(averagePointsPerCategory);
 }
 
-function isEmpty(str) {
-    if (str === null || str == "") return true;
-    return false;
+function tryReadText(msg) {
+    let str = prompt(msg);
+
+    if (str === null) {
+        alert("Exiting...");
+        return false;
+    } else if (str === "") {
+        alert("This can't be empty!");
+        return false;
+    }
+
+    return str;
 }
 
-function arePointsValid(num) {
-    if (
-        isEmpty(num) ||
-        isNaN(num) ||
-        parseFloat(num) < 0 ||
-        parseFloat(num) > 100
-    )
+function tryReadPoints(msg) {
+    let points = prompt(msg);
+
+    if (points === null) {
+        alert("Exiting...");
         return false;
-    return true;
+    } else if (
+        points === "" ||
+        isNaN(points) ||
+        parseFloat(points) <= 0 ||
+        parseFloat(points) > 100
+    ) {
+        alert("Invalid points!");
+        return false;
+    }
+
+    return points;
 }
 
 function getCategorizedStudents(students) {

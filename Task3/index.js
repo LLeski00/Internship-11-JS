@@ -5,37 +5,39 @@ let salary;
 let sectors = new Map();
 
 do {
-    firstName = prompt(
-        "Enter the first of the worker (Press cancel to exit): "
+    firstName = tryReadText(
+        "Enter the first name of the worker (Press cancel to exit): "
     );
 
-    if (isEmpty(firstName)) {
-        alert("Exiting...");
+    if (!firstName) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    lastName = prompt(
+    lastName = tryReadText(
         "Enter the last name of the worker (Press cancel to exit): "
     );
 
-    if (isEmpty(lastName)) {
-        alert("Exiting...");
+    if (!lastName) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    sector = prompt(
+    sector = tryReadText(
         "Enter the sector in which the worker is in (Press cancel to exit): "
     );
 
-    if (isEmpty(sector)) {
-        alert("Exiting...");
+    if (!sector) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    salary = prompt("Enter the salary of the worker (Press cancel to exit): ");
+    salary = tryReadSalary(
+        "Enter the salary of the worker (Press cancel to exit): "
+    );
 
-    if (!isNumberValid(salary)) {
-        alert("Exiting...");
+    if (!salary) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -53,33 +55,52 @@ if (sectors.length == 0) {
     alert("No workers entered...");
 } else {
     let sectorTotalSalaries = getSectorTotalSalaries(sectors);
-
     let totalSalary = [...sectorTotalSalaries.values()].reduce(
         (acc, salary) => acc + salary,
         0
     );
-
     let sectorContribution = new Map();
 
     for (const sector of sectorTotalSalaries.keys()) {
         sectorContribution.set(
             sector,
-            (sectorTotalSalaries.get(sector) / totalSalary) * 100
+            ((sectorTotalSalaries.get(sector) / totalSalary) * 100).toFixed(2) +
+                "%"
         );
     }
 
     console.log("Total salary: " + totalSalary);
+    console.log("Sector contribution:");
     console.log(sectorContribution);
+    displayWorkerContribution(sectors, sectorTotalSalaries);
 }
 
-function isEmpty(str) {
-    if (str === null || str == "") return true;
-    return false;
+function tryReadText(msg) {
+    let str = prompt(msg);
+
+    if (str === null) {
+        alert("Exiting...");
+        return false;
+    } else if (str === "") {
+        alert("This can't be empty!");
+        return false;
+    }
+
+    return str;
 }
 
-function isNumberValid(num) {
-    if (isEmpty(num) || isNaN(num) || parseFloat(num) <= 0) return false;
-    return true;
+function tryReadSalary(msg) {
+    let salary = prompt(msg);
+
+    if (salary === null) {
+        alert("Exiting...");
+        return false;
+    } else if (salary === "" || isNaN(salary) || parseFloat(salary) <= 0) {
+        alert("Invalid salary!");
+        return false;
+    }
+
+    return salary;
 }
 
 function getSectorTotalSalaries(sectors) {
@@ -93,4 +114,20 @@ function getSectorTotalSalaries(sectors) {
     }
 
     return sectorTotalSalaries;
+}
+
+function displayWorkerContribution(sectors, sectorTotalSalaries) {
+    console.log("Contributions of the workers for their sector:");
+    sectors.forEach((workers, sector) => {
+        workers.sort((a, b) => a.salary - b.salary);
+        workers.forEach((worker) => {
+            let contribution =
+                (worker.salary / sectorTotalSalaries.get(sector)) * 100;
+            console.log(
+                `${worker.firstName} ${
+                    worker.lastName
+                } - Contribution: ${contribution.toFixed(2)}%`
+            );
+        });
+    });
 }

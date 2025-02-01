@@ -6,13 +6,11 @@ let cities = [];
 let csvContent;
 
 do {
-    cityName = prompt("Enter the city (Press cancel to exit): ");
+    cityName = tryReadText("Enter the city (Press cancel to exit): ");
 
-    if (isEmpty(cityName)) {
-        alert("Exiting...");
-
-        if (confirm("Do you want to try again?")) continue;
-        else break;
+    if (!cityName) {
+        if (confirm("Do you want to continue?")) continue;
+        break;
     }
 
     cities.push(cityName);
@@ -26,12 +24,20 @@ if (cities.length !== 0) {
     let filteredCities = cities.filter((city) => city.length >= 5);
     console.log(filteredCities);
     csvContent = "data:text/csv;charset=utf-8," + cities.join("\n");
-    console.log(csvContent);
 }
 
-function isEmpty(str) {
-    if (str === null || str === "") return true;
-    return false;
+function tryReadText(msg) {
+    let str = prompt(msg);
+
+    if (str === null) {
+        alert("Exiting...");
+        return false;
+    } else if (str === "") {
+        alert("This can't be empty!");
+        return false;
+    }
+
+    return str;
 }
 
 function handleClick() {

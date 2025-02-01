@@ -5,52 +5,38 @@ let salary;
 let industryWorkers = new Map();
 
 do {
-    firstName = prompt(
+    firstName = tryReadText(
         "Enter the first name of the worker (Press cancel to exit): "
     );
 
-    if (firstName === null) {
-        alert("Exiting...");
-        break;
-    } else if (firstName === "") {
-        alert("The first name can't be empty!");
+    if (!firstName) {
         if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    lastName = prompt(
+    lastName = tryReadText(
         "Enter the last name of the worker (Press cancel to exit): "
     );
 
-    if (lastName === null) {
-        alert("Exiting...");
-        break;
-    } else if (lastName === "") {
-        alert("The last name can't be empty!");
+    if (!lastName) {
         if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    industry = prompt(
+    industry = tryReadText(
         "Enter the industry in which the worker is in (Press cancel to exit): "
     );
 
-    if (industry === null) {
-        alert("Exiting...");
-        break;
-    } else if (industry === "") {
-        alert("The industry can't be empty!");
+    if (!industry) {
         if (confirm("Do you want to continue?")) continue;
         break;
     }
 
-    salary = prompt("Enter the salary of the worker (Press cancel to exit): ");
+    salary = tryReadSalary(
+        "Enter the salary of the worker (Press cancel to exit): "
+    );
 
-    if (salary === null) {
-        alert("Exiting...");
-        break;
-    } else if (!isNumberValid(salary)) {
-        alert("The salary is not valid!");
+    if (!salary) {
         if (confirm("Do you want to continue?")) continue;
         break;
     }
@@ -92,9 +78,32 @@ if (industryWorkers.length == 0) {
     console.log(industryInfo);
 }
 
-function isNumberValid(num) {
-    if (num === "" || isNaN(num) || parseFloat(num) <= 0) return false;
-    return true;
+function tryReadText(msg) {
+    let str = prompt(msg);
+
+    if (str === null) {
+        alert("Exiting...");
+        return false;
+    } else if (str === "") {
+        alert("This can't be empty!");
+        return false;
+    }
+
+    return str;
+}
+
+function tryReadSalary(msg) {
+    let salary = prompt(msg);
+
+    if (salary === null) {
+        alert("Exiting...");
+        return false;
+    } else if (salary === "" || isNaN(salary) || parseFloat(salary) <= 0) {
+        alert("Invalid salary!");
+        return false;
+    }
+
+    return salary;
 }
 
 function getAverageIndustrySalaries(industryWorkers) {

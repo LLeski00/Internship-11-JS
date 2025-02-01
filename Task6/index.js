@@ -4,12 +4,12 @@ let price;
 let equipment = [];
 
 do {
-    equipmentName = prompt(
-        "Enter the first name of the student (Press cancel to exit): "
+    equipmentName = tryReadText(
+        "Enter the name of the equipment (Press cancel to exit): "
     );
 
-    if (isEmpty(equipmentName)) {
-        alert("Exiting...");
+    if (!equipmentName) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -17,10 +17,12 @@ do {
         "Is this equipment available? (Press cancel for no): "
     );
 
-    price = prompt("Enter the price of the equipment (Press cancel to exit): ");
+    price = tryReadPrice(
+        "Enter the price of the equipment (Press cancel to exit): "
+    );
 
-    if (!isPriceValid(price)) {
-        alert("Exiting...");
+    if (!price) {
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -65,14 +67,32 @@ if (equipment.length == 0) {
     console.log(groupedAvailableEquipment);
 }
 
-function isEmpty(str) {
-    if (str === null || str == "") return true;
-    return false;
+function tryReadText(msg) {
+    let str = prompt(msg);
+
+    if (str === null) {
+        alert("Exiting...");
+        return false;
+    } else if (str === "") {
+        alert("This can't be empty!");
+        return false;
+    }
+
+    return str;
 }
 
-function isPriceValid(num) {
-    if (isEmpty(num) || isNaN(num) || parseFloat(num) < 0) return false;
-    return true;
+function tryReadPrice(msg) {
+    let price = prompt(msg);
+
+    if (price === null) {
+        alert("Exiting...");
+        return false;
+    } else if (price === "" || isNaN(price) || parseFloat(price) <= 0) {
+        alert("Invalid price!");
+        return false;
+    }
+
+    return price;
 }
 
 function displayUnavailableIndexes(equipment) {

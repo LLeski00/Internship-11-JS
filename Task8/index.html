@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Task 8</title>
+    </head>
+    <body>
+        <form class="form">
+            <label for="equipmentName">Equipment name:</label>
+            <input type="text" id="equipmentName" />
+            <label for="price">Price:</label>
+            <input type="text" id="price" />
+            <label for="equipmentStatus">Equipment status:</label>
+            <label>
+                <input
+                    type="radio"
+                    name="equipmentStatus"
+                    value="available"
+                />Available
+            </label>
+            <label>
+                <input
+                    type="radio"
+                    name="equipmentStatus"
+                    value="unavailable"
+                />Unavailable
+            </label>
+            <button class="submitBtn" type="submit">Submit</button>
+        </form>
+        <p class="ratio"></p>
+        <ul class="output"></ul>
+    </body>
+    <script src="./index.js"></script>
+</html>

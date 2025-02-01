@@ -6,11 +6,15 @@ let industryWorkers = new Map();
 
 do {
     firstName = prompt(
-        "Enter the first of the worker (Press cancel to exit): "
+        "Enter the first name of the worker (Press cancel to exit): "
     );
 
-    if (isEmpty(firstName)) {
+    if (firstName === null) {
         alert("Exiting...");
+        break;
+    } else if (firstName === "") {
+        alert("The first name can't be empty!");
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -18,8 +22,12 @@ do {
         "Enter the last name of the worker (Press cancel to exit): "
     );
 
-    if (isEmpty(lastName)) {
+    if (lastName === null) {
         alert("Exiting...");
+        break;
+    } else if (lastName === "") {
+        alert("The last name can't be empty!");
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -27,15 +35,23 @@ do {
         "Enter the industry in which the worker is in (Press cancel to exit): "
     );
 
-    if (isEmpty(industry)) {
+    if (industry === null) {
         alert("Exiting...");
+        break;
+    } else if (industry === "") {
+        alert("The industry can't be empty!");
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
     salary = prompt("Enter the salary of the worker (Press cancel to exit): ");
 
-    if (!isNumberValid(salary)) {
+    if (salary === null) {
         alert("Exiting...");
+        break;
+    } else if (!isNumberValid(salary)) {
+        alert("The salary is not valid!");
+        if (confirm("Do you want to continue?")) continue;
         break;
     }
 
@@ -57,11 +73,10 @@ if (industryWorkers.length == 0) {
     averageIndustrySalaries = [...averageIndustrySalaries].sort(
         (a, b) => a.values - b.values
     );
-
+    console.log("Average salary per industry:");
     console.log(averageIndustrySalaries);
 
     let industryInfo = new Map();
-
     for (let [industry, salary] of averageIndustrySalaries) {
         let numOfWorkers = industryWorkers.get(industry).length;
 
@@ -73,16 +88,12 @@ if (industryWorkers.length == 0) {
         });
     }
 
+    console.log("Sorted industry info:");
     console.log(industryInfo);
 }
 
-function isEmpty(str) {
-    if (str === null || str == "") return true;
-    return false;
-}
-
 function isNumberValid(num) {
-    if (isEmpty(num) || isNaN(num) || parseFloat(num) <= 0) return false;
+    if (num === "" || isNaN(num) || parseFloat(num) <= 0) return false;
     return true;
 }
 
@@ -90,11 +101,10 @@ function getAverageIndustrySalaries(industryWorkers) {
     let averageIndustrySalaries = new Map();
 
     for (let key of industryWorkers.keys()) {
+        let currentIndustry = industryWorkers.get(key);
         let averageIndustrySalary =
-            industryWorkers
-                .get(key)
-                .reduce((acc, worker) => acc + worker.salary, 0) /
-            industryWorkers.get(key).length;
+            currentIndustry.reduce((acc, worker) => acc + worker.salary, 0) /
+            currentIndustry.length;
         averageIndustrySalaries.set(key, averageIndustrySalary);
     }
 

@@ -12,7 +12,7 @@ do {
     } else if (title === "") {
         alert("The title can't be empty");
         if (confirm("Continue adding?")) continue;
-        else break;
+        break;
     }
 
     price = prompt("Enter the price of the book (Press cancel to exit): ");
@@ -23,7 +23,7 @@ do {
     } else if (!isNumberValid(price)) {
         alert("The number is not valid");
         if (confirm("Continue adding?")) continue;
-        else break;
+        break;
     }
 
     genre = prompt("Enter the genre of the book (Press cancel to exit): ");
@@ -34,7 +34,7 @@ do {
     } else if (genre === "") {
         alert("The genre can't be empty");
         if (confirm("Continue adding?")) continue;
-        else break;
+        break;
     }
 
     let newBook = { title: title, price: parseFloat(price), genre: genre };

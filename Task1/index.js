@@ -6,23 +6,35 @@ let books = [];
 do {
     title = prompt("Enter the name of the book (Press cancel to exit): ");
 
-    if (isEmpty(title)) {
+    if (title === null) {
         alert("Exiting...");
         break;
+    } else if (title === "") {
+        alert("The title can't be empty");
+        if (confirm("Continue adding?")) continue;
+        else break;
     }
 
     price = prompt("Enter the price of the book (Press cancel to exit): ");
 
-    if (!isNumberValid(price)) {
+    if (price === null) {
         alert("Exiting...");
         break;
+    } else if (!isNumberValid(price)) {
+        alert("The number is not valid");
+        if (confirm("Continue adding?")) continue;
+        else break;
     }
 
     genre = prompt("Enter the genre of the book (Press cancel to exit): ");
 
-    if (isEmpty(genre)) {
+    if (genre === null) {
         alert("Exiting...");
         break;
+    } else if (genre === "") {
+        alert("The genre can't be empty");
+        if (confirm("Continue adding?")) continue;
+        else break;
     }
 
     let newBook = { title: title, price: parseFloat(price), genre: genre };
@@ -41,17 +53,15 @@ if (books.length == 0) {
         "The book with the biggest difference from the average price is " +
             books[0].title +
             " with the difference of " +
-            Math.abs(books[0].price - averagePrice)
+            Math.abs(books[0].price - averagePrice).toFixed(2)
     );
-}
 
-function isEmpty(str) {
-    if (str === null || str == "") return true;
-    return false;
+    console.log("Books sorted by difference from the average price:");
+    console.log(books);
 }
 
 function isNumberValid(num) {
-    if (isEmpty(num) || isNaN(num) || parseFloat(num) <= 0) return false;
+    if (num === "" || isNaN(num) || parseFloat(num) <= 0) return false;
     return true;
 }
 
